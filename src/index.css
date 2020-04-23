@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #2e3035;
+  color : white;
 }
 
 code {
@@ -15,3 +17,18 @@ code {
 /* logout-button:hover{
   color : red;
 } */
+
+.button-link {
+  background-color : transparent;
+  color : #007bff;
+  border : none;
+}
+
+.jumbotron{
+  background-color: #2e3035;
+}
+
+.dark{
+  background-color: #2e3035;
+  color : white;
+}

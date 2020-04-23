@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import {Input, Form, Button, FormGroup} from 'reactstrap';
 
 class LoginComponent extends Component{
-    constructor(props){
-        super(props);
-        // this.state = {
-        //     signup : false,
-        // }
-    }
+    // constructor(props){
+    //     super(props);
+    //     // this.state = {
+    //     //     signup : false,
+    //     // }
+    // }
 
     componentDidMount(){
         this.redirect();
