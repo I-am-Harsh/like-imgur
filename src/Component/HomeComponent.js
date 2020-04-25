@@ -10,9 +10,7 @@ class HomeComponent extends Component{
         return(
             <div className='container-fluid'>
                 Home
-                <div>
-                    here scroll image appear
-                </div>
+                
             </div>
             
         );

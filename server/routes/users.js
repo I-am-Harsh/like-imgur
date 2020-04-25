@@ -17,8 +17,10 @@ router
     }
     else{
       data = fields;
+      console.log("some stuff");
     }
   })
+  console.log(data);
   User.find({email : data.email})
   .then((result) => {
     // console.log(result.length);
@@ -58,7 +60,7 @@ router
     if(result.length == 0){
       User.create(data)
       .then((result) => {
-        console.log("Result form create : ", result);
+        // console.log("Result form create : ", result);
         res.json({success : true, username : result.userName, message : ''})
       })
       .catch(err => console.log(err))

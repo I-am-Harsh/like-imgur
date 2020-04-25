@@ -11,7 +11,7 @@ class HeaderComponent extends Component{
     
     render(){
         return(            
-            <Navbar color='dark' light style={{color:'white'}} fixed='top'>
+            <Navbar color='dark' light style={{color:'white'}}>
                 <div className='container-fluid'>
                     <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
                     <Nav>
@@ -29,7 +29,7 @@ class HeaderComponent extends Component{
                         {   
                             this.props.isLoggedIn &&
                             <NavItem>
-                                <Post/>
+                                <Post username = {this.props.username}/>
                             </NavItem>
                         }                        
                             {
@@ -63,9 +63,8 @@ class HeaderComponent extends Component{
     }
 }
 
-const Post = () => {
+const Post = (props) => {
     const [modal, setModal  ] = useState(false);
-    const [desc, setDesc] = useState("");
     const toggle = () => setModal(!modal);
 
     const uploadImage = async (e) =>{
@@ -79,10 +78,8 @@ const Post = () => {
         }
         await axios.post(`http://localhost:9000/upload`, form, config)
         .then((result) => {
-            const src = result;
-            console.log("this is src : ", src);
+            console.log("this is result : ", result.data); 
         })
-        
     }
     
     return (    
@@ -103,8 +100,9 @@ const Post = () => {
                             <Label for='image'>
                                 Choose Image
                             </Label>
-                            <Input type = 'file' name='image' className='dark'></Input>
+                            <Input type = 'file' name='image'></Input>
                         </FormGroup>
+                        <Input type = 'text' hidden name='username' value={props.username}></Input>
                         <ModalFooter>
                             <Button type='submit' color="success" >Add</Button>
                             <Button color="danger" onClick={toggle}>Cancel</Button>

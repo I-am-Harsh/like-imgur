@@ -12,7 +12,7 @@ class MainComponent extends Component{
         super(props);
         this.state = {
             isLoggedIn : true,
-            username : ''
+            username : 'asd'
         }
     }
 
@@ -93,7 +93,7 @@ class MainComponent extends Component{
         return(
             <div>
                 <BrowserRouter>
-                    <HeaderComponent isLoggedIn = {this.state.isLoggedIn} logout = {this.logout}/>
+                    <HeaderComponent isLoggedIn = {this.state.isLoggedIn} username = {this.state.username} logout = {this.logout}/>
                     <div className='container-fluid mt-3'>
                         <Switch>
                             <Route exact path ='/' component = { props => <HomeComponent {...props}/>}/>

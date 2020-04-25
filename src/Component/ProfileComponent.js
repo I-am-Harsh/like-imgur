@@ -1,73 +1,76 @@
 import React, {Component} from 'react';
-import { Media, Card, Jumbotron, CardImg, CardBody, CardTitle, CardText } from 'reactstrap';
+import {Card, CardImg, CardBody, CardTitle, CardText } from 'reactstrap';
+import axios from 'axios';
+
+
 
 class ProfileComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data : [
-                {
-                    path : "./FullSizeRender3.jpg",
-                    desc : "description"
-                },
-                {
-                    path : "./FullSizeRender3.jpg",
-                    desc : "description"
-                },
-                {
-                    path : "./FullSizeRender3.jpg",
-                    desc : "description"
-                }
-            ]
+            data : ''
         }
     }
     componentDidMount(){
         if(!this.props.isLoggedIn){
-            // alert('You need to login to access this page    ')
-            // this.props.history.push("/login")
+            alert('You need to login to access this page    ')
+            this.props.history.push("/login")
+        }
+        else{
+            var url = window.location.href
+            url = url.split('paste/');
+            axios.get("http://" + window.location.hostname + ":9000/upload/" + this.props.username)
+            .then((result) => {
+                console.log(result);
+                this.setState({
+                    data : result.data
+                })
+            })
+            console.log(this.state.data);
         }
     }
     
     render(){
-        return(
-            <div className='container-fluid'>
-                <div className='jumbotron'>
-                    <h2>
-                        Hi {this.props.username} !
-                    </h2>
-                    <h3>
-                        You have {this.state.data.length} posts
-                    </h3>
+        if(this.state.data !== ''){
+            return(
+                // <div></div>
+                <div className='container-fluid'>
+                    <div className='jumbotron'>
+                        <h2>
+                            Hi {this.props.username} !
+                        </h2>
+                        <h3>
+                            You have {this.state.data.length} posts
+                        </h3>
+                    </div>
+                        {
+                            this.state.data.map((image,index) => 
+                                <div key={index}>
+                                    <Card className='dark text-center mb-5' >
+                                        <CardImg top src="./server/routes/upload/1587805666681FullSizeRender 2.jpg" width="50%" height="50%">
+                                        </CardImg>
+                                        <CardBody>
+                                            <CardTitle>
+                                                <b>{image.description}</b>
+                                            </CardTitle>
+                                            <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+                                        </CardBody>
+                                    </Card>
+                                </div>
+                            )
+                        }
                 </div>
-                    {/* {
-                        this.state.data.map((image, index) => 
-                            <div className='text-center mb-5' key = {index}>
-                                <figure>
-                                    <img src={image.path} onClick={image.src} alt="lmao" height = "500" width = "500" loading='lazy'/>
-                                </figure>
-                                <figcaption>{image.desc}</figcaption>
-                            </div>
-                        )
-                    } */}
-                    {
-                        this.state.data.map((image,index) => 
-                            <div key={index}>
-                                <Card className='dark text-center mb-5' >
-                                    <CardImg top src={image.path} width="50%" height="50%">
-                                    </CardImg>
-                                    <CardBody>
-                                        <CardTitle>
-                                            <b>{image.desc}</b>
-                                        </CardTitle>
-                                        <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                                    </CardBody>
-                                </Card>
-                            </div>
-                        )
-                    }
-            </div>
-        );
+            );
+        }
+        else{
+            return(
+                <div>
+                    You have no Posts
+                </div>
+            );
+        }
     }
+    
 }
 
 export default ProfileComponent;

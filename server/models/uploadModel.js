@@ -2,11 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var imageSchema = new Schema({
-    author : String,
+    username : String,
     description : String,
-    imageData : {
-        type : String,
-        required : true
+    imagePath : {
+        type : String
     },
     comments : [String],
     likes : Number
