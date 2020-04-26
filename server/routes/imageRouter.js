@@ -16,8 +16,8 @@ imageRouter.post('/', async (req,res) => {
         else{
             console.log(fields);
             const name = Date.now() + file.image.name;
-            path = __dirname + "/uploads/" + name;
-            // path =  '../public/uploads/' + name;
+            // path = __dirname + "/uploads/" + name;
+            path =  __dirname + '/../public/uploads/' + name;
             fs.readFile(file.image.path, (err, data) => {
                 fs.writeFile(path, data, (err) => {
                     if(err) console.log(err);
@@ -25,7 +25,7 @@ imageRouter.post('/', async (req,res) => {
                         Image.create({
                             username : fields.username,
                             description : fields.desc,
-                            imagePath : path,
+                            imagePath : name,
                         })
                         .then(result => {
                             res.json({success : true})
@@ -65,9 +65,24 @@ imageRouter.post('/', async (req,res) => {
 
 .get("/:username", (req, res) => {
     Image.find({username : req.params.username})
-    .then((result) => {
-        res.json(result);
-    })
-});
+    .sort({ createdAt: -1 })
+    .exec(function(err, docs) {
+        if(err) console.log(err);
+        res.json(docs);
+    });
+})
+
+.get('/', (req, res) => {
+    // Image.find()
+    // .then(result => res.json(result));
+    // Image.find({}).sort({ field: 'desc' })
+    // .then(result => res.json(result))
+    // .catch(err => console.log(err));
+    // res.json("lmao");
+    Image.find({}).sort({ createdAt: -1 }).exec(function(err, docs) {
+        if(err) console.log(err);
+        res.json(docs);
+    });
+})
 
 module.exports = imageRouter;

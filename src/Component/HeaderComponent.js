@@ -11,7 +11,7 @@ class HeaderComponent extends Component{
     
     render(){
         return(            
-            <Navbar color='dark' light style={{color:'white'}}>
+            <Navbar color='dark mb-5' light style={{color:'white'}} fixed='top'>
                 <div className='container-fluid'>
                     <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
                     <Nav>
@@ -80,6 +80,7 @@ const Post = (props) => {
         .then((result) => {
             console.log("this is result : ", result.data); 
         })
+        toggle();
     }
     
     return (    

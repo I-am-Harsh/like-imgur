@@ -9,6 +9,9 @@ var imageSchema = new Schema({
     },
     comments : [String],
     likes : Number
+
+},{
+    timestamps : true
 })
 
 var Image = mongoose.model('Image', imageSchema);

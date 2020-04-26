@@ -91,7 +91,7 @@ class MainComponent extends Component{
     
     render(){
         return(
-            <div>
+            <div className='container-fluid'>
                 <BrowserRouter>
                     <HeaderComponent isLoggedIn = {this.state.isLoggedIn} username = {this.state.username} logout = {this.logout}/>
                     <div className='container-fluid mt-3'>
