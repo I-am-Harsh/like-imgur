@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardImg, CardBody, CardHeader, CardTitle, CardText } from 'reactstrap';
+import {Card, CardImg, CardBody, CardTitle } from 'reactstrap';
 import axios from 'axios';
 
 class HomeComponent extends Component{

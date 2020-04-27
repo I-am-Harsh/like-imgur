@@ -88,12 +88,29 @@ class MainComponent extends Component{
             isLoggedIn : false
         })
     }
+
+    //upload image
+    uploadImage = async (form, config) =>{
+        await axios.post(`http://localhost:9000/upload`, form, config)
+        .then((result) => {
+            if(result.data.success){
+                return true;
+            }
+            else{
+                return false;
+            }
+        })
+        
+    }
     
     render(){
         return(
             <div className='container-fluid'>
                 <BrowserRouter>
-                    <HeaderComponent isLoggedIn = {this.state.isLoggedIn} username = {this.state.username} logout = {this.logout}/>
+                    <HeaderComponent isLoggedIn = {this.state.isLoggedIn} 
+                        username = {this.state.username} 
+                        logout = {this.logout}
+                        uploadImage = {this.uploadImage} />
                     <div className='container-fluid mt-3'>
                         <Switch>
                             <Route exact path ='/' component = { props => <HomeComponent {...props}/>}/>

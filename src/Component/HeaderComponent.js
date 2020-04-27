@@ -1,37 +1,127 @@
 import React, {Component, useState} from 'react';
 import {Nav, Navbar, NavItem} from 'reactstrap';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Label, Input, FormGroup } from 'reactstrap';
+import { Collapse, NavbarToggler} from 'reactstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 class HeaderComponent extends Component{
-    // constructor(props){
-    //     super(props);
-    // }
+    constructor(props){
+        super(props);
+        this.state = {
+            collapsed : false,
+            width : window.innerWidth
+        }
+    }
+
+    componentDidMount(){
+        window.addEventListener('resize', this.handleWindowSizeChange);
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowSizeChange);
+    }
+
+    handleWindowSizeChange = () => {
+        this.setState({ width: window.innerWidth });
+      };
+
+    toggleNavbar = () =>{
+        this.setState({
+            collapsed : !this.state.collapsed
+        })
+    }
     
     render(){
-        return(            
-            <Navbar color='dark mb-5' light style={{color:'white'}} fixed='top'>
-                <div className='container-fluid'>
+        const width = this.state.width
+        var mobile;
+        if(width <= 768){
+            mobile = true
+        }
+        else{
+            mobile = false
+        }
+        // for pc
+        if(!mobile){
+            return(            
+                <Navbar color='dark mb-5' light style={{color:'white'}} fixed='top' expand='md'>
+                    <div className='container-fluid'>
+                        <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
+                        <Nav>
+                            <NavItem>
+                                <Link className='nav-link' to = {'/'}>
+                                    Home
+                                </Link>
+                            </NavItem>
+                            {
+                                this.props.isLoggedIn &&
+                                <NavItem>
+                                    <Link className='nav-link' to = {'/profile'}>Profile</Link>
+                                </NavItem>
+                            }
+                            {   
+                                this.props.isLoggedIn &&
+                                <NavItem>
+                                    <Post username = {this.props.username}
+                                    uploadImage = {this.props.uploadImage}/>
+                                </NavItem>
+                            }                        
+                                {
+                                    this.props.isLoggedIn ? 
+                                    <NavItem>
+                                        <input type='button' className='nav-link button-link' onClick={this.props.logout} 
+                                            value = 'Logout'
+                                        />
+                                    </NavItem>
+                                    : 
+                                    <React.Fragment>
+                                        <NavItem>
+                                            <Link className='nav-link' 
+                                                to = {{pathname : "/login", state: {signup : false}}}
+                                            >
+                                                Login
+                                            </Link>
+                                        </NavItem>
+                                        <NavItem>
+                                            <Link className='nav-link' 
+                                                to = {{pathname : '/login', state : {signup : true}}}>
+                                                Signup
+                                            </Link>
+                                        </NavItem>
+                                    </React.Fragment>
+                                }
+                        </Nav>
+                    </div>
+                </Navbar>
+            );
+        }
+
+        // for mobile
+        return(
+            <div>
+                <Navbar color="dark" dark fixed='top'>
                     <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
-                    <Nav>
-                        <NavItem>
-                            <Link className='nav-link' to = {'/'}>
-                                Home
-                            </Link>
-                        </NavItem>
-                        {
-                            this.props.isLoggedIn &&
+                    <input type='text' className='dark' style={{width : "150px"}} placeholder='Search..'></input>
+                    <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
+                    <Collapse isOpen={this.state.collapsed} navbar>
+                        <Nav navbar>
                             <NavItem>
-                                <Link className='nav-link' to = {'/profile'}>Profile</Link>
+                                <Link className='nav-link' to = {'/'}>
+                                    Home
+                                </Link>
                             </NavItem>
-                        }
-                        {   
-                            this.props.isLoggedIn &&
-                            <NavItem>
-                                <Post username = {this.props.username}/>
-                            </NavItem>
-                        }                        
+                            {
+                                this.props.isLoggedIn &&
+                                <NavItem>
+                                    <Link className='nav-link' to = {'/profile'}>Profile</Link>
+                                </NavItem>
+                            }
+                            {   
+                                this.props.isLoggedIn &&
+                                <NavItem>
+                                    <Post username = {this.props.username} 
+                                    uploadImage = {this.props.uploadImage}/>
+                                </NavItem>
+                            }                        
                             {
                                 this.props.isLoggedIn ? 
                                 <NavItem>
@@ -54,11 +144,13 @@ class HeaderComponent extends Component{
                                             Signup
                                         </Link>
                                     </NavItem>
-                                </React.Fragment>
+                                </React.Fragment>   
                             }
-                    </Nav>
-                </div>
-            </Navbar>
+                            {/* <input type='text'></input> */}
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+            </div>
         );
     }
 }
@@ -66,8 +158,9 @@ class HeaderComponent extends Component{
 const Post = (props) => {
     const [modal, setModal  ] = useState(false);
     const toggle = () => setModal(!modal);
+    console.log(props);
 
-    const uploadImage = async (e) =>{
+    const upload = async (e) =>{
         e.preventDefault();
         var form = new FormData(e.target);
         for (var key of form.entries()) {
@@ -76,11 +169,14 @@ const Post = (props) => {
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
-        await axios.post(`http://localhost:9000/upload`, form, config)
-        .then((result) => {
-            console.log("this is result : ", result.data); 
-        })
-        toggle();
+        const success = props.uploadImage(form, config)
+        if(success){
+            toggle();
+        }
+        else{
+            alert('Error');
+        }
+        
     }
     
     return (    
@@ -89,7 +185,7 @@ const Post = (props) => {
             <Modal isOpen={modal} toggle={toggle} backdrop='static'>
                 <ModalHeader toggle={toggle} style={{backgroundColor : "#2e3035"}}>Add an Expense</ModalHeader>
                 <ModalBody style={{backgroundColor : "#2e3035"}}>
-                    <Form onSubmit={e => uploadImage(e)}>
+                    <Form onSubmit={e => upload(e)}>
                         <FormGroup>
                             <Label for='desc'>
                                 Description

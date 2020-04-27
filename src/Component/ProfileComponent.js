@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardImg, CardBody, CardTitle, CardText } from 'reactstrap';
+import {Card, CardImg, CardBody, CardTitle } from 'reactstrap';
 import axios from 'axios';
 
 
@@ -17,8 +17,6 @@ class ProfileComponent extends Component{
             this.props.history.push("/login")
         }
         else{
-            var url = window.location.href
-            url = url.split('paste/');
             await axios.get("http://" + window.location.hostname + ":9000/upload/" + this.props.username)
             .then((result) => {
                 console.log(result);
@@ -33,7 +31,7 @@ class ProfileComponent extends Component{
     render(){
         if(this.state.data.length){
             return(
-                <div className='container-fluid'>
+                <div className='container-fluid top'>
                     {
                         this.state.data.map((image,index) => 
                             <div key={index} className='col-md-4 offset-md-4'>
@@ -54,7 +52,7 @@ class ProfileComponent extends Component{
         }
         else{
             return(
-                <div>
+                <div className='container-fluid top'>
                     Hi <b>{this.props.username}</b> !
                     You have no Posts
                     <div>

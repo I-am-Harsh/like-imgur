@@ -14,9 +14,7 @@ imageRouter.post('/', async (req,res) => {
         return;
         }
         else{
-            console.log(fields);
             const name = Date.now() + file.image.name;
-            // path = __dirname + "/uploads/" + name;
             path =  __dirname + '/../public/uploads/' + name;
             fs.readFile(file.image.path, (err, data) => {
                 fs.writeFile(path, data, (err) => {
@@ -28,11 +26,9 @@ imageRouter.post('/', async (req,res) => {
                             imagePath : name,
                         })
                         .then(result => {
-                            res.json({success : true})
-                            // res.json(result);
-                            // console.log(result);
+                            res.json({success : true, path : name})
                         })
-                        .catch(err => console.log("Error : ", err));
+                        .catch(err => res.json({success : false, path : null}));
                     }
                 })
             })
