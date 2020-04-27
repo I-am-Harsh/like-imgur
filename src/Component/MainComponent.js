@@ -12,7 +12,8 @@ class MainComponent extends Component{
         super(props);
         this.state = {
             isLoggedIn : true,
-            username : 'asd'
+            username : 'asd',
+            nsfw : false
         }
     }
 
@@ -102,6 +103,12 @@ class MainComponent extends Component{
         })
         
     }
+
+    nsfwToggle = () => {
+        this.setState({
+            nsfw : !this.state.nsfw
+        })
+    }
     
     render(){
         return(
@@ -110,10 +117,14 @@ class MainComponent extends Component{
                     <HeaderComponent isLoggedIn = {this.state.isLoggedIn} 
                         username = {this.state.username} 
                         logout = {this.logout}
-                        uploadImage = {this.uploadImage} />
+                        uploadImage = {this.uploadImage}
+                        nsfwToggle = {this.nsfwToggle}
+                        nsfw = {this.state.nsfw} />
                     <div className='container-fluid mt-3'>
                         <Switch>
-                            <Route exact path ='/' component = { props => <HomeComponent {...props}/>}/>
+                            <Route exact path ='/' component = { props => 
+                                <HomeComponent {...props} nsfw = {this.state.nsfw}/>
+                            }/>
                             <Route exact path ='/login' component = { props => 
                                 <LoginComponent {...props} login = {this.login} 
                                     signup = {this.signup} redirect = {this.state.isLoggedIn} />

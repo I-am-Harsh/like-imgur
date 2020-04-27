@@ -21,13 +21,28 @@ class HomeComponent extends Component{
     }
 
     render(){
-        console.log(this.state.data.length);
-        console.log(this.state.data);
+        // console.log(this.state.data.length);
+        // console.log(this.state.data);
+        console.log(this.props.nsfw);
         if(this.state.data.length !== 0){
             return(
                 <div className='container-fluid top'>
                     {
-                        this.state.data.map((image,index) => 
+                        this.state.data.map((image,index) =>
+                        this.props.nsfw ?
+                            <div key={index} className='col-md-4 offset-md-4'>
+                                <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
+                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' >
+                                    </CardImg>
+                                    <CardBody>
+                                        <CardTitle>
+                                            {image.description}
+                                        </CardTitle>
+                                    </CardBody>
+                                </Card>
+                            </div>
+                            :
+                            !image.nsfw &&
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
                                     <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' >

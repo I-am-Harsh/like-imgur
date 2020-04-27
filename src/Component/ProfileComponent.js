@@ -19,12 +19,10 @@ class ProfileComponent extends Component{
         else{
             await axios.get("http://" + window.location.hostname + ":9000/upload/" + this.props.username)
             .then((result) => {
-                console.log(result);
                 this.setState({
                     data : result.data
                 })
             })
-            console.log(this.state.data);
         }
     }
     

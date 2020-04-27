@@ -18,12 +18,18 @@ imageRouter.post('/', async (req,res) => {
             path =  __dirname + '/../public/uploads/' + name;
             fs.readFile(file.image.path, (err, data) => {
                 fs.writeFile(path, data, (err) => {
-                    if(err) console.log(err);
+                    if(err) res.json({success : false, path : null});
                     else{
+                        var nsfw = undefined;
+                        if(fields.nsfw){
+                            nsfw = true
+                        }
+                        
                         Image.create({
                             username : fields.username,
                             description : fields.desc,
                             imagePath : name,
+                            nsfw : nsfw
                         })
                         .then(result => {
                             res.json({success : true, path : name})

@@ -30,16 +30,28 @@ class HeaderComponent extends Component{
             collapsed : !this.state.collapsed
         })
     }
+
+    logoutClick = () => {
+        this.props.logout() 
+        this.toggleNavbar()
+    }
+
+    nsfwClick = () => {
+        this.props.nsfwToggle()
+        this.toggleNavbar()
+    }
     
     render(){
         const width = this.state.width
         var mobile;
-        if(width <= 768){
+        if(width <= 500){
             mobile = true
         }
         else{
             mobile = false
         }
+
+
         // for pc
         if(!mobile){
             return(            
@@ -105,48 +117,69 @@ class HeaderComponent extends Component{
                     <Collapse isOpen={this.state.collapsed} navbar>
                         <Nav navbar>
                             <NavItem>
-                                <Link className='nav-link' to = {'/'}>
+                                <Link className='nav-link' to = {'/'} onClick={this.toggleNavbar}>
                                     Home
                                 </Link>
                             </NavItem>
                             {
                                 this.props.isLoggedIn &&
                                 <NavItem>
-                                    <Link className='nav-link' to = {'/profile'}>Profile</Link>
+                                    <Link className='nav-link' to = {'/profile'} onClick={this.toggleNavbar}>
+                                        Profile
+                                    </Link>
                                 </NavItem>
                             }
                             {   
                                 this.props.isLoggedIn &&
                                 <NavItem>
                                     <Post username = {this.props.username} 
-                                    uploadImage = {this.props.uploadImage}/>
+                                    uploadImage = {this.props.uploadImage} 
+                                    toggleNavbar = {this.toggleNavbar}/>
                                 </NavItem>
                             }                        
                             {
                                 this.props.isLoggedIn ? 
                                 <NavItem>
-                                    <input type='button' className='nav-link button-link' onClick={this.props.logout} 
+                                    <input type='button' className='nav-link button-link' 
+                                        onClick={this.logoutClick} 
                                         value = 'Logout'
-                                    />
+                                    />  
                                 </NavItem>
                                 : 
                                 <React.Fragment>
                                     <NavItem>
                                         <Link className='nav-link' 
-                                            to = {{pathname : "/login", state: {signup : false}}}
+                                            to = {{pathname : "/login", state: {signup : false}}} 
+                                            onClick={this.toggleNavbar}
                                         >
                                             Login
                                         </Link>
                                     </NavItem>
                                     <NavItem>
                                         <Link className='nav-link' 
-                                            to = {{pathname : '/login', state : {signup : true}}}>
+                                            to = {{pathname : '/login', state : {signup : true}}}
+                                            onClick={this.toggleNavbar}
+                                        >
                                             Signup
                                         </Link>
                                     </NavItem>
                                 </React.Fragment>   
                             }
-                            {/* <input type='text'></input> */}
+                            {
+                                this.props.nsfw ?
+                                <NavItem>
+                                    <input type='button' className='nav-link button-link' 
+                                        onClick={this.nsfwClick}
+                                        value = 'NSFW On'/>  
+                                </NavItem>
+                                :
+                                <NavItem>
+                                    <input type='button' className='nav-link button-link' 
+                                        onClick={this.nsfwClick}
+                                        value = 'NSFW Off'/>  
+                                </NavItem>
+                                
+                            }
                         </Nav>
                     </Collapse>
                 </Navbar>
@@ -158,8 +191,6 @@ class HeaderComponent extends Component{
 const Post = (props) => {
     const [modal, setModal  ] = useState(false);
     const toggle = () => setModal(!modal);
-    console.log(props);
-
     const upload = async (e) =>{
         e.preventDefault();
         var form = new FormData(e.target);
@@ -172,6 +203,7 @@ const Post = (props) => {
         const success = props.uploadImage(form, config)
         if(success){
             toggle();
+            props.toggleNavbar();
         }
         else{
             alert('Error');
@@ -197,9 +229,15 @@ const Post = (props) => {
                             <Label for='image'>
                                 Choose Image
                             </Label>
-                            <Input type = 'file' name='image'></Input>
+                            <Input type = 'file' name='image' required></Input>
                         </FormGroup>
-                        <Input type = 'text' hidden name='username' value={props.username}></Input>
+                        <FormGroup check>
+                            <Label check>
+                            <Input type="checkbox" name='nsfw' defaultChecked={false} />{' '}
+                                NSFW
+                            </Label>
+                        </FormGroup>
+                        <Input type = 'text' hidden name='username' defaultValue = {props.username}></Input>
                         <ModalFooter>
                             <Button type='submit' color="success" >Add</Button>
                             <Button color="danger" onClick={toggle}>Cancel</Button>

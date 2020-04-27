@@ -3,13 +3,7 @@ import React, { Component } from 'react';
 import {Input, Form, Button, FormGroup} from 'reactstrap';
 
 class LoginComponent extends Component{
-    // constructor(props){
-    //     super(props);
-    //     // this.state = {
-    //     //     signup : false,
-    //     // }
-    // }
-
+    
     componentDidMount(){
         this.redirect();
     }
@@ -31,7 +25,7 @@ class LoginComponent extends Component{
         }
         
         const loginRender = 
-            <div className='container-fluid'>
+            <div className='container-fluid top'>
                 <Form onSubmit={e => this.props.login(e)}>
                     <FormGroup>
                         <Input name='email' type='email' placeholder='Enter your email' required></Input>
@@ -47,7 +41,7 @@ class LoginComponent extends Component{
             </div>
         
         const signupRender = 
-            <div className='container-fluid'>
+            <div className='container-fluid top'>
                 <Form onSubmit={e => this.props.signup(e)}>
                     <FormGroup>
                         <Input name='email' type='email' placeholder='Enter your email' required></Input>
@@ -65,7 +59,6 @@ class LoginComponent extends Component{
                         <Button type='submit'>Create User</Button>
                     </FormGroup>
                 </Form>
-                {/* <Button type='button' outline onClick={this.change}>Login</Button> */}
             </div>
 
         var render;

@@ -8,7 +8,11 @@ var imageSchema = new Schema({
         type : String
     },
     comments : [String],
-    likes : Number
+    likes : Number,
+    nsfw : {
+        type : Boolean,
+        default : false
+    }
 
 },{
     timestamps : true
