@@ -74,7 +74,8 @@ class HeaderComponent extends Component{
                                 this.props.isLoggedIn &&
                                 <NavItem>
                                     <Post username = {this.props.username}
-                                    uploadImage = {this.props.uploadImage}/>
+                                    uploadImage = {this.props.uploadImage}
+                                    mobile = {mobile}/>
                                 </NavItem>
                             }                        
                                 {
@@ -134,7 +135,8 @@ class HeaderComponent extends Component{
                                 <NavItem>
                                     <Post username = {this.props.username} 
                                     uploadImage = {this.props.uploadImage} 
-                                    toggleNavbar = {this.toggleNavbar}/>
+                                    toggleNavbar = {this.toggleNavbar} 
+                                    mobile = {mobile}/>
                                 </NavItem>
                             }                        
                             {
@@ -191,19 +193,22 @@ class HeaderComponent extends Component{
 const Post = (props) => {
     const [modal, setModal  ] = useState(false);
     const toggle = () => setModal(!modal);
+    
     const upload = async (e) =>{
         e.preventDefault();
         var form = new FormData(e.target);
-        for (var key of form.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        // for (var key of form.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
         const success = props.uploadImage(form, config)
         if(success){
             toggle();
-            props.toggleNavbar();
+            if(props.mobile){
+                props.toggleNavbar();
+            }
         }
         else{
             alert('Error');

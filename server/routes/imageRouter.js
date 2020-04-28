@@ -2,7 +2,6 @@ var express = require('express');
 var Image = require('../models/uploadModel');
 var imageRouter = express.Router();
 var formidable = require('formidable');
-var util = require('util');
 var fs = require('fs');
 
 
@@ -18,7 +17,7 @@ imageRouter.post('/', async (req,res) => {
             path =  __dirname + '/../public/uploads/' + name;
             fs.readFile(file.image.path, (err, data) => {
                 fs.writeFile(path, data, (err) => {
-                    if(err) res.json({success : false, path : null});
+                    if(err) res.json({success : false});
                     else{
                         var nsfw = undefined;
                         if(fields.nsfw){
@@ -32,37 +31,14 @@ imageRouter.post('/', async (req,res) => {
                             nsfw : nsfw
                         })
                         .then(result => {
-                            res.json({success : true, path : name})
+                            res.json({success : true, image : result})
                         })
-                        .catch(err => res.json({success : false, path : null}));
+                        .catch(err => res.json({success : false}));
                     }
                 })
             })
         }
     })
-
-    // console.log("desc : ", data);
- 
-    // await form.on('fileBegin', (name, file) => {
-    //     name = Date.now() + file.name;
-    //     file.path =  __dirname + '/uploads/' + name;
-        
-    //     path = file.path
-    //     console.log("on")
-    // })
-    // console.log("File Path : ", path);
-
-    // Image.create({
-    //     author : "asd",
-    //     description : data,
-    //     imagePath : path,
-    // })
-    // .then(result => {
-    //     // res.json({success : true})
-    //     res.json(result);
-    //     console.log(result);
-    // })
-    // .catch(err => console.log("Error : ", err));  
 })
 
 .get("/:username", (req, res) => {
@@ -75,16 +51,20 @@ imageRouter.post('/', async (req,res) => {
 })
 
 .get('/', (req, res) => {
-    // Image.find()
-    // .then(result => res.json(result));
-    // Image.find({}).sort({ field: 'desc' })
-    // .then(result => res.json(result))
-    // .catch(err => console.log(err));
-    // res.json("lmao");
     Image.find({}).sort({ createdAt: -1 }).exec(function(err, docs) {
         if(err) console.log(err);
         res.json(docs);
     });
+})
+
+.delete('/:imagePath', (req, res) => {
+    console.log(req.params.imagePath);
+    Image.deleteOne({imagePath : req.params.imagePath})
+    .then(result => {
+        res.json({success : true});
+    })
+    .catch(err => res.json({success : false}));
+    
 })
 
 module.exports = imageRouter;

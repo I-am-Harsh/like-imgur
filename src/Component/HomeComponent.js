@@ -10,20 +10,17 @@ class HomeComponent extends Component{
         }
     }
     async componentDidMount(){
-        await axios.get("http://" + window.location.hostname + ":9000/upload")
+        await axios.get("http://" + window.location.hostname + ":9000/image")
         .then((result) => {
             this.setState({
                 data : result.data
-            })
+            })      
             console.log(this.state.data);
         })
         .catch(err => console.log(err));
     }
 
     render(){
-        // console.log(this.state.data.length);
-        // console.log(this.state.data);
-        console.log(this.props.nsfw);
         if(this.state.data.length !== 0){
             return(
                 <div className='container-fluid top'>
@@ -32,7 +29,7 @@ class HomeComponent extends Component{
                         this.props.nsfw ?
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' >
+                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' loading='lazy'>
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>
@@ -45,7 +42,7 @@ class HomeComponent extends Component{
                             !image.nsfw &&
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' >
+                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' loading='lazy'>
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>

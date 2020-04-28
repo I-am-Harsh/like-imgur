@@ -13,7 +13,9 @@ class MainComponent extends Component{
         this.state = {
             isLoggedIn : true,
             username : 'asd',
-            nsfw : false
+            nsfw : false,
+            newImageProfile : undefined,
+            newImageHome : undefined
         }
     }
 
@@ -21,22 +23,20 @@ class MainComponent extends Component{
     login = async (e) => {
         e.preventDefault();
         var creds = new FormData(e.target);
-        for (var key of creds.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        // for (var key of creds.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
         await axios.post(`http://localhost:9000/users/login`, creds, config)
         .then(result => {
             if(result.data.success === true){
-                console.log("User logged in");
+                // console.log("User logged in");
                 this.setState({
                     isLoggedIn : true,
                     username : result.data.username
                 })
-                console.log("State after login : ", this.state.isLoggedIn);
-
             }
             else if(result.data.success === false){
                 console.log("The id or password did not match");
@@ -54,9 +54,9 @@ class MainComponent extends Component{
      signup = async (e) =>{
         e.preventDefault();
         var creds = new FormData(e.target);
-        for (var key of creds.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        // for (var key of creds.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
@@ -72,7 +72,6 @@ class MainComponent extends Component{
                         isLoggedIn : true,
                         username : result.data.username
                     })
-                    console.log(this.state);
                 }
             }
             else{
@@ -92,16 +91,28 @@ class MainComponent extends Component{
 
     //upload image
     uploadImage = async (form, config) =>{
-        await axios.post(`http://localhost:9000/upload`, form, config)
+        await axios.post(`http://localhost:9000/image`, form, config)
         .then((result) => {
             if(result.data.success){
+                var url = window.location.pathname;
+                console.log("URL : ", url)
+                if(url == '/profile'){
+                    this.setState({
+                        newImageProfile : result
+                    })
+                }
+                else if(url == '/'){
+                    this.setState({
+                        newImageHome : result
+                    })
+                }
+                console.log("Main state after upload image : ",this.state);
                 return true;
             }
             else{
                 return false;
             }
         })
-        
     }
 
     nsfwToggle = () => {
@@ -123,7 +134,8 @@ class MainComponent extends Component{
                     <div className='container-fluid mt-3'>
                         <Switch>
                             <Route exact path ='/' component = { props => 
-                                <HomeComponent {...props} nsfw = {this.state.nsfw}/>
+                                <HomeComponent {...props} nsfw = {this.state.nsfw} 
+                                    newImage = {this.state.newImageHome}/>
                             }/>
                             <Route exact path ='/login' component = { props => 
                                 <LoginComponent {...props} login = {this.login} 
@@ -133,7 +145,8 @@ class MainComponent extends Component{
                                 component = {props => 
                                     <ProfileComponent {...props} 
                                     username = {this.state.username} 
-                                    isLoggedIn = {this.state.isLoggedIn}/>}
+                                    isLoggedIn = {this.state.isLoggedIn}
+                                    />}
                             />
                             <Route exact path ='/signup' component = {props => 
                                 <LoginComponent {...props} login = {this.login} 
