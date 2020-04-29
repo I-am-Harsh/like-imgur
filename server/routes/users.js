@@ -6,7 +6,8 @@ var util = require('util');
 
 
 router
-/* GET users listing. */
+
+// login
 .post('/login', async (req,res) => {
   var data = '';
   form = new formidable.IncomingForm();
@@ -23,11 +24,13 @@ router
   console.log(data);
   User.find({email : data.email})
   .then((result) => {
-    // console.log(result.length);
     if(result.length != 0){
-      // console.log(result, data.password);
       if(result[0].password === data.password){
-        res.json({success : true, token : "send token", username : result[0].userName})
+        res.json({success : true, 
+          token : "send token", 
+          username : result[0].userName, 
+          email : result[0].email
+        })
       }
       else{
         res.json({success : false})
@@ -54,14 +57,18 @@ router
       data = fields;
     }
   })
-  // console.log(data);
+  
   User.find({email : data.email})
   .then((result) => {  
     if(result.length == 0){
       User.create(data)
       .then((result) => {
-        // console.log("Result form create : ", result);
-        res.json({success : true, username : result.userName, message : ''})
+        res.json({
+          success : true, 
+          username : result.userName, 
+          email : result.email,
+          message : ''
+        })
       })
       .catch(err => console.log(err))
     }

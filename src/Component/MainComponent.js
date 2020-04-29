@@ -10,47 +10,45 @@ import ProfileComponent from './ProfileComponent';
 
 class MainComponent extends Component{
     constructor(props){
+        const cookies = new Cookies();
+        var isLoggedIn = false;
+        var username = '';
+        var email = ''
+        if(cookies.get("isLoggedIn") === 'true'){
+            console.log("Cookie is true")
+            console.log('This state is false rn');
+
+            isLoggedIn = true;
+            username = cookies.get('username');
+            email = cookies.get('email')
+            console.log("Email from first : ", email)
+            
+        }
+        else{
+            console.log('this is else');
+            console.log(cookies.get('isLoggedIn'));
+            if(cookies.get('isLoggedIn') === undefined || cookies.get('isLoggedIn') === 'false'){
+                if(cookies.get('username') !==  undefined){
+                    username = cookies.get('username')
+                    email = cookies.get('email')
+                    console.log("Email from else : ", email)
+                }
+            }
+        }
+
         super(props);
         this.state = {
-            isLoggedIn : false,
-            username : '',
+            isLoggedIn : isLoggedIn,
+            username : username,
             nsfw : false,
             newImageProfile : undefined,
-            newImageHome : undefined
+            newImageHome : undefined,
+            email : email
         }
+        
+        
     }
 
-    componentWillMount(){
-        console.log("will mount")
-    }
-
-    componentDidMount(){
-        // console.log(this.state.nsfw)
-        // const cookies = new Cookies();
-        // console.log("did mount");
-        // console.log(cookies.get('isLoggedIn'));
-        // if(cookies.get("isLoggedIn") === 'true'){
-        //     console.log("Cookie is true")
-        //     if(this.state.isLoggedIn === false){
-        //         console.log('This state is false rn');
-        //         this.setState({
-        //             isLoggedIn : true,
-        //             username : cookies.get('username')
-        //         })
-        //     }
-        //     console.log("New State : ",this.state.isLoggedIn)
-        // }
-        // else{
-        //     console.log("this is else : ", this.state);
-        //     if(cookies.get('isLoggedIn') !== undefined){
-        //         if(cookies.get('username') !==  undefined){
-        //             this.setState({
-        //                 username : cookies.get('username')
-        //             })
-        //         }
-        //     }
-        // }
-    }
 
     // login
     login = async (e) => {
@@ -65,19 +63,14 @@ class MainComponent extends Component{
                 let date = new Date();
                 date.setTime(date.getTime() + (6000*10000000000000));
                 const cookie = new Cookies();
-                cookie.set('username',result.data.username, { 
-                    path : '/'
-                })
-                cookie.set('isLoggedIn', true, {path : '/', expires : date})
-                console.log(cookie.get('username'));
-                console.log(cookie.get('isLoggedIn'));
+                cookie.set('username',result.data.username, { path : '/'})
+                cookie.set('isLoggedIn', true, { path : '/', expires : date})
+                cookie.set('email', result.data.email, { path : '/' })
 
                 this.setState({
                     isLoggedIn : true,
                     username : result.data.username
-                })
-
-                
+                })                
             }
             else if(result.data.success === false){
                 console.log("The id or password did not match");
@@ -110,6 +103,15 @@ class MainComponent extends Component{
                         isLoggedIn : true,
                         username : result.data.username
                     })
+                    const cookie = new Cookies();
+                    let date = new Date();
+                    date.setTime(date.getTime() + (6000*10000000000000));
+                    cookie.remove('username');
+                    cookie.remove('isLoggedIn');
+                    cookie.remove('email');
+                    cookie.set('username',result.data.username, { path : '/'})
+                    cookie.set('isLoggedIn', true, { path : '/', expires : date})
+                    cookie.set('email', result.data.email, { path : '/' })
                 }
             }
             else{
@@ -121,9 +123,10 @@ class MainComponent extends Component{
 
     // logout
     logout = () => {
+        const cookies = new Cookies();
         this.setState({
             isLoggedIn : false
-        })
+        }, cookies.remove('isLoggedIn'));
     }
 
     //upload image
@@ -161,12 +164,13 @@ class MainComponent extends Component{
         return(
             <div className='container-fluid'>
                 <BrowserRouter>
-                    <HeaderComponent isLoggedIn = {this.state.isLoggedIn} 
+                    <HeaderComponent  isLoggedIn = {this.state.isLoggedIn} 
                         username = {this.state.username} 
                         logout = {this.logout}
                         uploadImage = {this.uploadImage}
                         nsfwToggle = {this.nsfwToggle}
-                        nsfw = {this.state.nsfw} />
+                        nsfw = {this.state.nsfw}
+                    />
                     <div className='container-fluid mt-3'>
                         <Switch>
                             <Route exact path ='/' component = { props => 
@@ -175,7 +179,10 @@ class MainComponent extends Component{
                             }/>
                             <Route exact path ='/login' component = { props => 
                                 <LoginComponent {...props} login = {this.login} 
-                                    signup = {this.signup} redirect = {this.state.isLoggedIn} />
+                                    signup = {this.signup}
+                                    email = {this.state.email}
+                                    redirect = {this.state.isLoggedIn} 
+                                />
                             }/>
                             <Route exact path = '/profile' 
                                 component = {props => 

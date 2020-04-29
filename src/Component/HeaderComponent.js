@@ -32,6 +32,7 @@ class HeaderComponent extends Component{
     }
 
     logoutClick = () => {
+        
         this.props.logout() 
         this.toggleNavbar()
     }

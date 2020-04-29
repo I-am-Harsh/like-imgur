@@ -5,7 +5,7 @@ import {Input, Form, Button, FormGroup} from 'reactstrap';
 class LoginComponent extends Component{
     
     componentDidMount(){
-        console.log("Redirect in login : ",this.props.redirect);
+        console.log("Email in login",this.props.email);
         this.redirect();
     }
 
@@ -29,7 +29,7 @@ class LoginComponent extends Component{
             <div className='container-fluid top'>
                 <Form onSubmit={e => this.props.login(e)}>
                     <FormGroup>
-                        <Input name='email' type='email' placeholder='Enter your email' required></Input>
+                        <Input name='email' id='emailLogin' type='email' defaultValue = {this.props.email} placeholder='Enter your email' required></Input>
                     </FormGroup>
                     <FormGroup>
                         <Input name = 'password' type='password' placeholder='Enter your password' required></Input>
@@ -45,7 +45,7 @@ class LoginComponent extends Component{
             <div className='container-fluid top'>
                 <Form onSubmit={e => this.props.signup(e)}>
                     <FormGroup>
-                        <Input name='email' type='email' placeholder='Enter your email' required></Input>
+                        <Input name='email' id='emailSignup' type='email' placeholder='Enter your email' required></Input>
                     </FormGroup>
                     <FormGroup>
                         <Input name='userName' type='text' placeholder='Enter your username' required></Input>
