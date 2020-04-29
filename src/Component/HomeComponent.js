@@ -15,7 +15,6 @@ class HomeComponent extends Component{
             this.setState({
                 data : result.data
             })      
-            console.log(this.state.data);
         })
         .catch(err => console.log(err));
     }

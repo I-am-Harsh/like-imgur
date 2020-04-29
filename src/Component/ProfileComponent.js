@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardImg, CardBody, CardTitle, ButtonGroup, 
-    ButtonDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button} from 'reactstrap';
+import {Card, CardImg, CardBody, CardTitle, Button} from 'reactstrap';
 import axios from 'axios';
 
 
@@ -15,8 +14,9 @@ class ProfileComponent extends Component{
     }
     
     async componentDidMount(){
+        console.log("Profile is logged in : ", this.props.isLoggedIn)
         if(!this.props.isLoggedIn){
-            alert('You need to login to access this page    ')
+            alert('You need to login to access this page')
             this.props.history.push("/login")
         }
         else{

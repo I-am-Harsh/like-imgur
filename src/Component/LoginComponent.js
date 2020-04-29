@@ -5,11 +5,12 @@ import {Input, Form, Button, FormGroup} from 'reactstrap';
 class LoginComponent extends Component{
     
     componentDidMount(){
+        console.log("Redirect in login : ",this.props.redirect);
         this.redirect();
     }
 
     redirect = () => {
-        if(this.props.redirect){
+        if(this.props.redirect === true){
             this.props.history.push(`/`)
         }
         // console.log("redirects")
