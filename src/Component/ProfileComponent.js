@@ -20,7 +20,7 @@ class ProfileComponent extends Component{
             this.props.history.push("/login")
         }
         else{
-            await axios.get("http://" + window.location.hostname + ":9000/image/" + this.props.username)
+            await axios.get("http://" + window.location.hostname + ":9001/image/" + this.props.username)
             .then((result) => {
                 this.setState({
                     data : result.data
@@ -49,7 +49,7 @@ class ProfileComponent extends Component{
 
     deletePost = async (imagePath, index) => {
         console.log(imagePath);
-        axios.delete("http://" + window.location.hostname + `:9000/image/${imagePath}`)
+        axios.delete("http://" + window.location.hostname + `:9001/image/${imagePath}`)
         .then(result => {
             if(result.data.success === true){
                 alert('Post deleted')
@@ -75,7 +75,7 @@ class ProfileComponent extends Component{
                         this.state.data.map((image,index) => 
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='dark text-center mb-5' >
-                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`} width="500">
+                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`} width="500">
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>

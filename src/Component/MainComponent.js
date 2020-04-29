@@ -57,7 +57,7 @@ class MainComponent extends Component{
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
-        await axios.post(`http://localhost:9000/users/login`, creds, config)
+        await axios.post("http://" + window.location.hostname + ":9001/" + `users/login`, creds, config)
         .then(result => {
             if(result.data.success === true){
                 let date = new Date();
@@ -91,7 +91,7 @@ class MainComponent extends Component{
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
-        await axios.post(`http://localhost:9000/users/signup`, creds, config)
+        await axios.post("http://" + window.location.hostname + ":9001" + `/users/signup`, creds, config)
         .then(result => {
             if(result.data.success === true){
                 if(result.data.message !== ''){
@@ -131,7 +131,7 @@ class MainComponent extends Component{
 
     //upload image
     uploadImage = async (form, config) =>{
-        await axios.post(`http://localhost:9000/image`, form, config)
+        await axios.post("http://" + window.location.hostname + ":9001" +`/image`, form, config)
         .then((result) => {
             if(result.data.success){
                 var url = window.location.pathname;

@@ -10,7 +10,7 @@ class HomeComponent extends Component{
         }
     }
     async componentDidMount(){
-        await axios.get("http://" + window.location.hostname + ":9000/image")
+        await axios.get("http://" + window.location.hostname + ":9001/image")
         .then((result) => {
             this.setState({
                 data : result.data
@@ -28,7 +28,7 @@ class HomeComponent extends Component{
                         this.props.nsfw ?
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' loading='lazy'>
+                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`}  width='250' loading='lazy'>
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>
@@ -41,7 +41,7 @@ class HomeComponent extends Component{
                             !image.nsfw &&
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9000/${image.imagePath}`}  width='250' loading='lazy'>
+                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`}  width='250' loading='lazy'>
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>
