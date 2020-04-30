@@ -18,10 +18,9 @@ router
     }
     else{
       data = fields;
-      console.log("some stuff");
     }
   })
-  console.log(data);
+  console.log("Data : ",data);
   User.find({email : data.email})
   .then((result) => {
     if(result.length != 0){

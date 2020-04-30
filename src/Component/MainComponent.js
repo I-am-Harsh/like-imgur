@@ -13,11 +13,9 @@ class MainComponent extends Component{
         const cookies = new Cookies();
         var isLoggedIn = false;
         var username = '';
-        var email = ''
+        var email = '';
         if(cookies.get("isLoggedIn") === 'true'){
-            console.log("Cookie is true")
-            console.log('This state is false rn');
-
+            
             isLoggedIn = true;
             username = cookies.get('username');
             email = cookies.get('email')
@@ -45,8 +43,6 @@ class MainComponent extends Component{
             newImageHome : undefined,
             email : email
         }
-        
-        
     }
 
 
@@ -57,7 +53,7 @@ class MainComponent extends Component{
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
-        await axios.post("http://" + window.location.hostname + ":9001/" + `users/login`, creds, config)
+        await axios.post("http://" + window.location.hostname + ":9001/users/login", creds, config)
         .then(result => {
             if(result.data.success === true){
                 let date = new Date();
@@ -66,14 +62,13 @@ class MainComponent extends Component{
                 cookie.set('username',result.data.username, { path : '/'})
                 cookie.set('isLoggedIn', true, { path : '/', expires : date})
                 cookie.set('email', result.data.email, { path : '/' })
-
                 this.setState({
                     isLoggedIn : true,
                     username : result.data.username
                 })                
             }
             else if(result.data.success === false){
-                console.log("The id or password did not match");
+                alert("The id or password did not match");
             }
             else if(result.data.success === undefined){
                 alert("The user does not exist");
@@ -91,7 +86,7 @@ class MainComponent extends Component{
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
-        await axios.post("http://" + window.location.hostname + ":9001" + `/users/signup`, creds, config)
+        await axios.post("http://" + window.location.hostname + ":9001/users/signup", creds, config)
         .then(result => {
             if(result.data.success === true){
                 if(result.data.message !== ''){
@@ -131,7 +126,7 @@ class MainComponent extends Component{
 
     //upload image
     uploadImage = async (form, config) =>{
-        await axios.post("http://" + window.location.hostname + ":9001" +`/image`, form, config)
+        await axios.post("http://" + window.location.hostname + ":9001/image", form, config)
         .then((result) => {
             if(result.data.success){
                 var url = window.location.pathname;
@@ -154,6 +149,7 @@ class MainComponent extends Component{
         })
     }
 
+    // nsfw toggle
     nsfwToggle = () => {
         this.setState({
             nsfw : !this.state.nsfw
