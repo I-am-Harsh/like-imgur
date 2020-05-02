@@ -5,6 +5,7 @@ var formidable = require('formidable');
 var fs = require('fs');
 
 
+// post an image
 imageRouter.post('/', async (req,res) => {
     form = new formidable.IncomingForm();
     await form.parse(req, (err, fields, file) => {
@@ -41,6 +42,7 @@ imageRouter.post('/', async (req,res) => {
     })
 })
 
+// profile comp images
 .get("/:username", (req, res) => {
     Image.find({username : req.params.username})
     .sort({ createdAt: -1 })
@@ -50,6 +52,7 @@ imageRouter.post('/', async (req,res) => {
     });
 })
 
+// home comp images
 .get('/', (req, res) => {
     Image.find({}).sort({ createdAt: -1 }).exec(function(err, docs) {
         if(err) console.log(err);
@@ -57,14 +60,41 @@ imageRouter.post('/', async (req,res) => {
     });
 })
 
-.delete('/:imagePath', (req, res) => {
-    console.log(req.params.imagePath);
-    Image.deleteOne({imagePath : req.params.imagePath})
+// delete images
+.delete('/:id', (req, res) => {
+    console.log(req.params.id);
+    Image.deleteOne({_id : req.params.id})
     .then(result => {
         res.json({success : true});
     })
     .catch(err => res.json({success : false}));
     
 })
+
+// like image
+.post("/like/:id", (req, res) => {
+    console.log(req.body);
+    const id = req.params.id;
+    Image.updateOne({_id : id}, {$push : {likes : req.body.username}} )
+    .then(result => res.json({success : true}))
+    // .then(result => console.log(result))
+    .catch(err => res.json({success : false}));
+})
+
+// delete like
+.delete('/like/:id/:username', (req, res) => {
+    const id = req.params.id;
+    Image.updateOne({_id : id},{
+        $pullAll : {
+            likes : [req.params.username]
+        }
+    })
+    .then(result => res.json({success : true}))
+    .catch(err => res.json({succes : false}));
+})
+
+
+
+
 
 module.exports = imageRouter;

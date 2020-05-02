@@ -58,7 +58,7 @@ class HeaderComponent extends Component{
             return(            
                 <Navbar color='dark mb-5' light style={{color:'white'}} fixed='top' expand='md'>
                     <div className='container-fluid'>
-                        <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Virgin App</Link>
+                        <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
                         <Nav>
                             <NavItem>
                                 <Link className='nav-link' to = {'/'}>
@@ -113,7 +113,7 @@ class HeaderComponent extends Component{
         return(
             <div>
                 <Navbar color="dark" dark fixed='top'>
-                    <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Virgin App</Link>
+                    <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
                     <input type='text' className='dark' style={{width : "150px"}} placeholder='Search..'></input>
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
                     <Collapse isOpen={this.state.collapsed} navbar>

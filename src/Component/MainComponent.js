@@ -6,6 +6,7 @@ import { Cookies } from 'react-cookie';
 import HomeComponent from './HomeComponent';
 import LoginComponent from './LoginComponent';
 import ProfileComponent from './ProfileComponent';
+import CommentComponent from './CommentComponent';
 
 
 class MainComponent extends Component{
@@ -15,16 +16,11 @@ class MainComponent extends Component{
         var username = '';
         var email = '';
         if(cookies.get("isLoggedIn") === 'true'){
-            
             isLoggedIn = true;
             username = cookies.get('username');
             email = cookies.get('email')
-            console.log("Email from first : ", email)
-            
         }
         else{
-            console.log('this is else');
-            console.log(cookies.get('isLoggedIn'));
             if(cookies.get('isLoggedIn') === undefined || cookies.get('isLoggedIn') === 'false'){
                 if(cookies.get('username') !==  undefined){
                     username = cookies.get('username')
@@ -155,6 +151,8 @@ class MainComponent extends Component{
             nsfw : !this.state.nsfw
         })
     }
+
+    
     
     render(){
         return(
@@ -171,7 +169,9 @@ class MainComponent extends Component{
                         <Switch>
                             <Route exact path ='/' component = { props => 
                                 <HomeComponent {...props} nsfw = {this.state.nsfw} 
-                                    newImage = {this.state.newImageHome}/>
+                                    newImage = {this.state.newImageHome} 
+                                    username = {this.state.username}
+                                />
                             }/>
                             <Route exact path ='/login' component = { props => 
                                 <LoginComponent {...props} login = {this.login} 
@@ -190,6 +190,12 @@ class MainComponent extends Component{
                             <Route exact path ='/signup' component = {props => 
                                 <LoginComponent {...props} login = {this.login} 
                                     signup = {this.signup} redirect = {this.state.isLoggedIn} />
+                            }/>
+                            <Route path='/post/*' component = { props =>
+                                <CommentComponent {...props} 
+                                    username = {this.state.username}
+                                    isLoggedIn = {this.state.isLoggedIn}
+                                />
                             }/>
                         </Switch>
                     </div>

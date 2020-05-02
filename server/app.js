@@ -23,6 +23,7 @@ connect.then(() => {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var imageRouter = require('./routes/imageRouter');
+var postRouter = require('./routes/postRouter');
 
 
 var app = express();
@@ -47,6 +48,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/', index);
 app.use('/users', users);
 app.use('/image',imageRouter);
+app.use('/post', postRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

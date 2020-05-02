@@ -47,9 +47,9 @@ class ProfileComponent extends Component{
         })
     }
 
-    deletePost = async (imagePath, index) => {
-        console.log(imagePath);
-        axios.delete("http://" + window.location.hostname + `:9001/image/${imagePath}`)
+    deletePost = async (id, index) => {
+        console.log(id);
+        axios.delete("http://" + window.location.hostname + `:9001/image/${id}`)
         .then(result => {
             if(result.data.success === true){
                 alert('Post deleted')
@@ -82,18 +82,7 @@ class ProfileComponent extends Component{
                                             <b>{image.description}</b>
                                         </CardTitle>
                                         <div style = {{textAlign : "right"}}>
-                                            {/* <ButtonGroup>
-                                                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={(e) => this.toggle(e)}>
-                                                    <DropdownToggle caret>
-                                                        Dropdown
-                                                    </DropdownToggle>
-                                                    <DropdownMenu>
-                                                    <DropdownItem>Dropdown Link</DropdownItem>
-                                                    <DropdownItem>Dropdown Link</DropdownItem>
-                                                    </DropdownMenu>
-                                                </ButtonDropdown>
-                                            </ButtonGroup> */}
-                                            <Button outline onClick={() => this.deletePost(image.imagePath, index)}>Delete</Button>
+                                            <Button outline onClick={() => this.deletePost(image._id, index)}>Delete</Button>
                                         </div>
                                     </CardBody>
                                 </Card>
