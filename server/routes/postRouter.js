@@ -27,7 +27,7 @@ postRouter
             }
         }
     })
-    .then(result => res.json(result))
+    .then(result => res.json({success : true, result : result}))
     .catch(err => res.json(err));
 })
 

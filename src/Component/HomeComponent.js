@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardImg, CardBody, CardTitle, Form, Label, FormGroup } from 'reactstrap';
+import {Card, CardImg, CardBody, CardTitle} from 'reactstrap';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -46,6 +46,7 @@ class HomeComponent extends Component{
 
     // open post
     openPost = (image) => {
+        console.log("lmao");
         this.props.history.push(`/post/${image._id}`)
     }
 
@@ -113,12 +114,13 @@ class HomeComponent extends Component{
                         // nsfw render ----------- add comment and like
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`}  width='250' loading='lazy'>
-                                    </CardImg>
+                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`} width='250' loading='lazy' 
+                                        onClick={() => this.openPost(image)}
+                                    />
                                     <CardBody>
                                     <CardTitle>
-                                            {image.description}
-                                        </CardTitle>
+                                        {image.description}
+                                    </CardTitle>
                                         <div className='row' id='operations'>
                                             <div className='col' id='like'>
                                                 {image.likes.length}
@@ -139,7 +141,6 @@ class HomeComponent extends Component{
                                                     <AddCommentIcon name='comment' fontSize='default'/>
                                                 </IconButton>
                                             </div>
-
                                         </div>
                                     </CardBody>
                                 </Card>

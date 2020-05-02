@@ -1,8 +1,13 @@
 import React, {Component, useState} from 'react';
 import {Nav, Navbar, NavItem} from 'reactstrap';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Label, Input, FormGroup } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Label} from 'reactstrap';
+import {FormGroup, Input} from '@material-ui/core';
 import { Collapse, NavbarToggler} from 'reactstrap';
 import { Link } from 'react-router-dom';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
+
 
 class HeaderComponent extends Component{
     constructor(props){
@@ -114,7 +119,7 @@ class HeaderComponent extends Component{
             <div>
                 <Navbar color="dark" dark fixed='top'>
                     <Link className='navbar-brand' style={{color:'white'}} to = {'/'}>Imgur App</Link>
-                    <input type='text' className='dark' style={{width : "150px"}} placeholder='Search..'></input>
+                    {/* <input type='text' className='dark' style={{width : "150px"}} placeholder='Search..'></input> */}
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
                     <Collapse isOpen={this.state.collapsed} navbar>
                         <Nav navbar>
@@ -198,9 +203,13 @@ const Post = (props) => {
     const upload = async (e) =>{
         e.preventDefault();
         var form = new FormData(e.target);
-        // for (var key of form.entries()) {
-        //     console.log(key[0] + ', ' + key[1]);
-        // }
+        for (var key of form.entries()) {
+            // console.log(key[0] + ', ' + key[1]);
+            if(key[0] === 'nsfw'){
+                form.delete("nsfw");
+                form.append("nsfw",true);
+            }
+        }
         const config = {     
             headers: { 'content-type': 'multipart/form-data' }
         }
@@ -228,20 +237,26 @@ const Post = (props) => {
                             <Label for='desc'>
                                 Description
                             </Label>
-                            <Input type='text' name='desc' className='dark' required >
+                            <Input type='text' name='desc' className='dark' style={{color : "white"}} required >
                             </Input>
                         </FormGroup>
                         <FormGroup>
-                            <Label for='image'>
+                            <Label for='image' style={{color : "white"}}>
                                 Choose Image
                             </Label>
-                            <Input type = 'file' name='image' required></Input>
+                            <Input type = 'file' name='image' required style={{color : "white"}}></Input>
                         </FormGroup>
                         <FormGroup check>
-                            <Label check>
+                            {/* <Label check>
                             <Input type="checkbox" name='nsfw' defaultChecked={false} />{' '}
                                 NSFW
-                            </Label>
+                            </Label> */}
+                            <FormControlLabel
+                                control={<Checkbox indeterminate />}
+                                label="NSFW"
+                                labelPlacement="end"
+                                name = 'nsfw'
+                                />
                         </FormGroup>
                         <Input type = 'text' hidden name='username' defaultValue = {props.username}></Input>
                         <ModalFooter>
