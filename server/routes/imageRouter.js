@@ -50,7 +50,6 @@ imageRouter.post('/', async (req,res) => {
         if(err) res.json(err);
         res.json(docs);
     })
-    .catch(err => res.json(err))
 })
 
 // home comp images
