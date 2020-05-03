@@ -1,1 +1,27 @@
-logout when on profile redirects
+sudo ln -s ~/like-imgur /var/www/like-imgur
+sudo chmod -R 755 /var/www
+sudo nano /etc/nginx/sites-available/imgur
+
+
+server {
+        listen 80;
+
+        root /var/www/do-react-example-app/build;
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name 139.59.67.241;
+
+        location / {
+                try_files $uri /index.html;
+        }
+}
+
+
+
+
+
+sudo ln -s /etc/nginx/sites-available/imgur /etc/nginx/sites-enabled/imgur
+
+sudo nginx -t
+sudo systemctl restart nginx
+

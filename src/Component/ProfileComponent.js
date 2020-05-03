@@ -27,16 +27,6 @@ class ProfileComponent extends Component{
                 })
             })
             console.log("state data after intial load : ",this.state.data);
-            // if(this.props.newImage !== undefined){
-            //     var newData = [...this.state.data]
-            //     console.log(this.props.newImage.data);
-            //     newData.unshift(this.props.newImage.data)
-            //     console.log(this.props.newData);
-            //     this.setState({
-            //         data : newData
-            //     })
-            //     console.log("Final new data : ", this.state.data);
-            // }
         }
     }
 
@@ -60,7 +50,7 @@ class ProfileComponent extends Component{
                 })
             }
             else{
-                console.log("rip"); 
+                console.log(result); 
             }
         })
         .catch(err => console.log(err));
@@ -75,7 +65,7 @@ class ProfileComponent extends Component{
                         this.state.data.map((image,index) => 
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='dark text-center mb-5' >
-                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`} width="500">
+                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`} width="500">
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>

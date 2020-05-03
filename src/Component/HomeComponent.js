@@ -79,6 +79,7 @@ class HomeComponent extends Component{
                     
                 }
                 else{
+                    console.log(result.data.err);
                     alert('There was an error please try again');
                 }
             })
@@ -99,6 +100,7 @@ class HomeComponent extends Component{
                 }
                 else{
                     console.log('didnt work');
+                    console.log(result.data.err);
                 }
             });
         }
@@ -114,7 +116,7 @@ class HomeComponent extends Component{
                         // nsfw render ----------- add comment and like
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`} width='250' loading='lazy' 
+                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`} width='250' loading='lazy' 
                                         onClick={() => this.openPost(image)}
                                     />
                                     <CardBody>
@@ -150,7 +152,7 @@ class HomeComponent extends Component{
                             !image.nsfw &&
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://localhost:9001/${image.imagePath}`}  width='250' loading='lazy'>
+                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`}  width='250' loading='lazy'>
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>

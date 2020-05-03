@@ -10,7 +10,7 @@ imageRouter.post('/', async (req,res) => {
     form = new formidable.IncomingForm();
     await form.parse(req, (err, fields, file) => {
         if(err) {
-        console.log(err) 
+        res.json(err);
         return;
         }
         else{
@@ -18,7 +18,7 @@ imageRouter.post('/', async (req,res) => {
             path =  __dirname + '/../public/uploads/' + name;
             fs.readFile(file.image.path, (err, data) => {
                 fs.writeFile(path, data, (err) => {
-                    if(err) res.json({success : false});
+                    if(err) res.json({success : false, err : err});
                     else{
                         var nsfw = undefined;
                         if(fields.nsfw){
@@ -34,7 +34,7 @@ imageRouter.post('/', async (req,res) => {
                         .then(result => {
                             res.json({success : true, image : result})
                         })
-                        .catch(err => res.json({success : false}));
+                        .catch(err => res.json({success : false, err : err}));
                     }
                 })
             })
@@ -47,9 +47,10 @@ imageRouter.post('/', async (req,res) => {
     Image.find({username : req.params.username})
     .sort({ createdAt: -1 })
     .exec(function(err, docs) {
-        if(err) console.log(err);
+        if(err) res.json(err);
         res.json(docs);
-    });
+    })
+    .catch(err => res.json(err))
 })
 
 // home comp images
@@ -67,7 +68,7 @@ imageRouter.post('/', async (req,res) => {
     .then(result => {
         res.json({success : true});
     })
-    .catch(err => res.json({success : false}));
+    .catch(err => res.json({success : false, err : err}));
     
 })
 
@@ -78,7 +79,7 @@ imageRouter.post('/', async (req,res) => {
     Image.updateOne({_id : id}, {$push : {likes : req.body.username}} )
     .then(result => res.json({success : true}))
     // .then(result => console.log(result))
-    .catch(err => res.json({success : false}));
+    .catch(err => res.json({success : false, err : err}));
 })
 
 // delete like
@@ -90,7 +91,7 @@ imageRouter.post('/', async (req,res) => {
         }
     })
     .then(result => res.json({success : true}))
-    .catch(err => res.json({succes : false}));
+    .catch(err => res.json({succes : false, err : err}));
 })
 
 

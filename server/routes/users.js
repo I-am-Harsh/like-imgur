@@ -13,7 +13,7 @@ router
   form = new formidable.IncomingForm();
   await form.parse(req, (err, fields, files) => {
     if(err) {
-      console.log(err) 
+      res.json(err)
       return;
     }
     else{
@@ -39,7 +39,7 @@ router
       res.json({success : undefined});
     }
   })
-  .catch(err => console.log(err));
+  .catch(err => res.json(err));
 })
 
 
@@ -49,7 +49,7 @@ router
   form = new formidable.IncomingForm();
   await form.parse(req, (err, fields, files) => {
     if(err) {
-      console.log(err) 
+      res.json(err)
       return;
     }
     else{
@@ -69,14 +69,14 @@ router
           message : ''
         })
       })
-      .catch(err => console.log(err))
+      .catch(err => res.json(err))
     }
       else{
         console.log("rejected");
         res.json({success : true, message : "The user already exists"});
       }
   })
-  .catch(err => console.log(err));
+  .catch(err => res.json(err));
 })
 
 

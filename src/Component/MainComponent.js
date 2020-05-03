@@ -65,12 +65,13 @@ class MainComponent extends Component{
             }
             else if(result.data.success === false){
                 alert("The id or password did not match");
+                
             }
             else if(result.data.success === undefined){
                 alert("The user does not exist");
             }
             else{
-                console.log(result)
+                console.log(result.data);
             }
         })
     }
@@ -106,7 +107,7 @@ class MainComponent extends Component{
                 }
             }
             else{
-                console.log(result)
+                console.log(result.data)
                 alert('There was an error please try again');
             }
         })
@@ -140,6 +141,7 @@ class MainComponent extends Component{
                 return true;
             }
             else{
+                console.log(result.data)
                 return false;
             }
         })

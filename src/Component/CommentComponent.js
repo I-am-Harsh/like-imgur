@@ -136,7 +136,7 @@ class CommentComponent extends Component {
             <div className='container-fluid top'>
                 <div className='col-md-4 offset-md-4'>
                     <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                        <CardImg top src={`http://localhost:9001/`+this.state.data.imagePath}  width='250' loading='lazy'/>
+                        <CardImg top src={`http://${window.location.hostname}:9001/`+this.state.data.imagePath}  width='250' loading='lazy'/>
                         <CardBody>
                             <CardTitle>
                                 {this.state.data.description}
