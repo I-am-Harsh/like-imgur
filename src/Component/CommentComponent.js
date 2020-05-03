@@ -110,7 +110,12 @@ class CommentComponent extends Component {
             })
             .then(result => {
                 if(result.data.success){
-                    console.log(result.data.result);
+                    var newData = this.state.data
+                    newData.comments.push({username : this.props.username, comment : this.state.comment})
+                    console.log(this.state.data.comments);
+                    this.setState({
+                        data : newData
+                    })
                 }
             })
         }
@@ -126,7 +131,7 @@ class CommentComponent extends Component {
         })
         .then(result => {
             if(result.data.success){
-                //add comment to the data 
+                console.log(this.state.comment);
             }
         })
     }
