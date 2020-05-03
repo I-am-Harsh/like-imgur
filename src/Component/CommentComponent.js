@@ -96,7 +96,8 @@ class CommentComponent extends Component {
 
     postComment = (event) =>{
         event.preventDefault();
-        if(!this.props.isLoggedin){
+        console.log(this.props);
+        if(!this.props.isLoggedIn){
             alert('you must login to post a comment');
             // this.props.history.push('/login');
         }
