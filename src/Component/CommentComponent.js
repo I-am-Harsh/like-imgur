@@ -24,16 +24,20 @@ class CommentComponent extends Component {
         url = url.split('/');
 
         // send req
-        await axios.get(`http://${window.location.hostname}:9001/post/${url[2]}`)
-        .then(result => {
-            if(result.data.success){
-                this.setState({
-                    data : result.data.result
-                })
-            }
-            console.log(this.state.data.likes);
-            console.log(this.props.username);
-        })
+        async function getData(){
+            await axios.get(`http://${window.location.hostname}:9001/post/${url[2]}`)
+            .then(result => {
+                if(result.data.success){
+                    this.setState({
+                        data : result.data.result
+                    })
+                }
+                console.log(this.state.data.likes);
+                console.log(this.props.username);
+            })
+        }
+
+        setInterval(getData, 5000);
     }
 
     handleComment = (event) => {
