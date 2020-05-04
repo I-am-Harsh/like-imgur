@@ -64,45 +64,50 @@ class HomeComponent extends Component{
 
     // like image
     like = (image, index) => {
-        var ifLiked = this.state.data[index].likes.indexOf(this.props.username);
-        if(ifLiked === -1){
-            axios.post("http://" + window.location.hostname + ":9001/image/like/" + image._id, {
-                "username" : this.props.username
-            })
-            .then(result => {
-                if(result.data.success){
-                    var newData = [...this.state.data]
-                    newData[index].likes.push(this.props.username)
-                    this.setState({
-                        data : newData
-                    })
-                    
-                }
-                else{
-                    console.log(result.data.err);
-                    alert('There was an error please try again');
-                }
-            })
+        if(this.props.isLoggedIn){
+            var ifLiked = this.state.data[index].likes.indexOf(this.props.username);
+            if(ifLiked === -1){
+                axios.post("http://" + window.location.hostname + ":9001/image/like/" + image._id, {
+                    "username" : this.props.username
+                })
+                .then(result => {
+                    if(result.data.success){
+                        var newData = [...this.state.data]
+                        newData[index].likes.push(this.props.username)
+                        this.setState({
+                            data : newData
+                        })
+                        
+                    }
+                    else{
+                        console.log(result.data.err);
+                        alert('There was an error please try again');
+                    }
+                })
+            }
+            else{
+                axios.delete(
+                    "http://" + window.location.hostname + ":9001/image/like/" + 
+                    image._id + "/" + this.props.username
+                )
+                .then(result => {
+                    if(result.data.success){
+                        var newData = [...this.state.data]
+                        newData[index].likes.splice(ifLiked, 1);
+                        console.log(newData);
+                        this.setState({
+                            data : newData
+                        });
+                    }
+                    else{
+                        console.log('didnt work');
+                        console.log(result.data.err);
+                    }
+                });
+            }
         }
         else{
-            axios.delete(
-                "http://" + window.location.hostname + ":9001/image/like/" + 
-                image._id + "/" + this.props.username
-            )
-            .then(result => {
-                if(result.data.success){
-                    var newData = [...this.state.data]
-                    newData[index].likes.splice(ifLiked, 1);
-                    console.log(newData);
-                    this.setState({
-                        data : newData
-                    });
-                }
-                else{
-                    console.log('didnt work');
-                    console.log(result.data.err);
-                }
-            });
+            alert('You need to login first');
         }
     }
 

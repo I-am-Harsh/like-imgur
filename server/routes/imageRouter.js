@@ -61,11 +61,20 @@ imageRouter.post('/', async (req,res) => {
 })
 
 // delete images
-.delete('/:id', (req, res) => {
+.delete('/:id/:name', (req, res) => {
     console.log(req.params.id);
     Image.deleteOne({_id : req.params.id})
     .then(result => {
-        res.json({success : true});
+        path = __dirname + '/../public/uploads/' + req.params.name
+        fs.unlink(path, (err) => {
+            if(err){
+                res.json(es.json({success : false, err : err}))
+            }
+            else{
+                res.json({success : true});
+            }
+        })
+        
     })
     .catch(err => res.json({success : false, err : err}));
     

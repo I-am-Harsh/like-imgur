@@ -56,6 +56,7 @@ class CommentComponent extends Component {
         }
     }
 
+
     like = () => {
         var ifLiked = this.state.data.likes.indexOf(this.props.username);
         if(ifLiked === -1){
@@ -118,7 +119,8 @@ class CommentComponent extends Component {
                     newData.comments.push({username : this.props.username, comment : this.state.comment})
                     console.log(this.state.data.comments);
                     this.setState({
-                        data : newData
+                        data : newData,
+                        comment : ''
                     })
                 }
             })
