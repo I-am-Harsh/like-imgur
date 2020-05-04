@@ -37,6 +37,11 @@ class ProfileComponent extends Component{
         })
     }
 
+    openPost = (image) => {
+        console.log("lmao");
+        this.props.history.push(`/post/${image._id}`)
+    }
+
     deletePost = async (id, index, imagePath) => {
         console.log(id);
         axios.delete("http://" + window.location.hostname + `:9001/image/${id}/${imagePath}/`)
@@ -65,7 +70,8 @@ class ProfileComponent extends Component{
                         this.state.data.map((image,index) => 
                             <div key={index} className='col-md-4 offset-md-4'>
                                 <Card className='dark text-center mb-5' >
-                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`} width="500">
+                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`} width="500"
+                                    onClick = {() => this.openPost(image)}>
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>

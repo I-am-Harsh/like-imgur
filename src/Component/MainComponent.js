@@ -173,7 +173,7 @@ class MainComponent extends Component{
                                 <HomeComponent {...props} nsfw = {this.state.nsfw} 
                                     newImage = {this.state.newImageHome} 
                                     username = {this.state.username}
-                                    isLoggedIn = {this.props.isLoggedIn}
+                                    isLoggedIn = {this.state.isLoggedIn}
                                 />
                             }/>
                             <Route exact path ='/login' component = { props => 
@@ -210,3 +210,5 @@ class MainComponent extends Component{
 
 
 export default MainComponent;
+
+// cp -r build ../../var/www/html

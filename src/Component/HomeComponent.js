@@ -64,6 +64,7 @@ class HomeComponent extends Component{
 
     // like image
     like = (image, index) => {
+        console.log(this.props);
         if(this.props.isLoggedIn){
             var ifLiked = this.state.data[index].likes.indexOf(this.props.username);
             if(ifLiked === -1){
@@ -111,6 +112,10 @@ class HomeComponent extends Component{
         }
     }
 
+    lol = () => {
+        console.log("worked");
+    }
+
     render(){
         if(this.state.data.length !== 0){
             return(
@@ -144,7 +149,7 @@ class HomeComponent extends Component{
                                             </div>
                                             <div className='col' id='comment'>
                                                 {image.comments.length}
-                                                <IconButton name='comment'>
+                                                <IconButton name='comment' onClick={() => this.openPost(image)}>
                                                     <AddCommentIcon name='comment' fontSize='default'/>
                                                 </IconButton>
                                             </div>
@@ -156,8 +161,9 @@ class HomeComponent extends Component{
                             // non nsfw render 
                             !image.nsfw &&
                             <div key={index} className='col-md-4 offset-md-4'>
-                                <Card className='text-center mb-5' style={{boxShadow : "10px"}}>
-                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`}  width='250' loading='lazy'>
+                                <Card className='text-center mb-5' style={{boxShadow : "10px"}} >
+                                    <CardImg top src={`http://${window.location.hostname}:9001/${image.imagePath}`}  width='250' loading='lazy'
+                                    onClick={() => this.openPost(image)} >
                                     </CardImg>
                                     <CardBody>
                                         <CardTitle>

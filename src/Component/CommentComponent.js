@@ -24,20 +24,16 @@ class CommentComponent extends Component {
         url = url.split('/');
 
         // send req
-        async function getData(){
-            await axios.get(`http://${window.location.hostname}:9001/post/${url[2]}`)
-            .then(result => {
-                if(result.data.success){
-                    this.setState({
-                        data : result.data.result
-                    })
-                }
-                console.log(this.state.data.likes);
-                console.log(this.props.username);
-            })
-        }
-
-        setInterval(getData, 5000);
+        await axios.get(`http://${window.location.hostname}:9001/post/${url[2]}`)
+        .then(result => {
+            if(result.data.success){
+                this.setState({
+                    data : result.data.result
+                })
+            }
+            console.log(this.state.data.likes);
+            console.log(this.props.username);
+        })
     }
 
     handleComment = (event) => {
@@ -58,43 +54,48 @@ class CommentComponent extends Component {
 
 
     like = () => {
-        var ifLiked = this.state.data.likes.indexOf(this.props.username);
-        if(ifLiked === -1){
-            axios.post("http://" + window.location.hostname + ":9001/image/like/" + this.state.data._id, {
-                "username" : this.props.username
-            })
-            .then(result => {
-                if(result.data.success){
-                    var newData = this.state.data   
-                    newData.likes.push(this.props.username)
-                    this.setState({
-                        data : newData
-                    })
-                    
-                }
-                else{
-                    alert('There was an error please try again');
-                }
-            })
+        if(this.props.isLoggedIn){
+            var ifLiked = this.state.data.likes.indexOf(this.props.username);
+            if(ifLiked === -1){
+                axios.post("http://" + window.location.hostname + ":9001/image/like/" + this.state.data._id, {
+                    "username" : this.props.username
+                })
+                .then(result => {
+                    if(result.data.success){
+                        var newData = this.state.data   
+                        newData.likes.push(this.props.username)
+                        this.setState({
+                            data : newData
+                        })
+                        
+                    }
+                    else{
+                        alert('There was an error please try again');
+                    }
+                })
+            }
+            else{
+                axios.delete(
+                    "http://" + window.location.hostname + ":9001/image/like/" + 
+                    this.state.data._id + "/" + this.props.username
+                )
+                .then(result => {
+                    if(result.data.success){
+                        var newData = this.state.data
+                        newData.likes.splice(ifLiked, 1);
+                        console.log(newData);
+                        this.setState({
+                            data : newData
+                        });
+                    }
+                    else{
+                        console.log('didnt work');
+                    }
+                });
+            }
         }
         else{
-            axios.delete(
-                "http://" + window.location.hostname + ":9001/image/like/" + 
-                this.state.data._id + "/" + this.props.username
-            )
-            .then(result => {
-                if(result.data.success){
-                    var newData = this.state.data
-                    newData.likes.splice(ifLiked, 1);
-                    console.log(newData);
-                    this.setState({
-                        data : newData
-                    });
-                }
-                else{
-                    console.log('didnt work');
-                }
-            });
+            alert('You need to login first');
         }
     }
 
