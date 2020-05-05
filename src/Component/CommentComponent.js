@@ -144,6 +144,7 @@ class CommentComponent extends Component {
     }
 
     render(){
+        
         return(
             this.state.data &&
             <div className='container-fluid top'>
@@ -179,12 +180,21 @@ class CommentComponent extends Component {
                                     this.state.data.comments.map((comment, index) => {
                                         return(
                                             <div className = 'row mb-1' id={index}>
-                                                <div className = 'col-12' style={{textAlign : "left"}}>
-                                                    {comment.username} -->
-                                                </div>                
-                                                <div className ='col-12' style={{marginLeft : "0", textAlign:"left"}}>
+                                                {
+                                                    this.props.username === comment.username ?
+                                                    
+                                                    <div className = 'col-12' style={{textAlign : "left", color:"#8BC34A"}}>
+                                                        {comment.username} -- {comment.comment}
+                                                    </div>   
+                                                    :
+                                                    <div className = 'col-12' style={{textAlign : "left"}}>
+                                                        {comment.username} -- {comment.comment}
+                                                    </div>
+                                                    
+                                                }
+                                                {/* <div className ='col-12' style={{marginLeft : "0", textAlign:"left"}}>
                                                     {comment.comment}
-                                                </div>                                
+                                                </div>                                 */}
                                             </div>
                                         );
                                     })
