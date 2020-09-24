@@ -7,7 +7,7 @@ var fs = require('fs');
 
 // post an image
 imageRouter.post('/', async (req,res) => {
-    form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm();
     await form.parse(req, (err, fields, file) => {
         if(err) {
         res.json(err);
@@ -15,7 +15,7 @@ imageRouter.post('/', async (req,res) => {
         }
         else{
             const name = Date.now() + file.image.name;
-            path =  __dirname + '/../public/uploads/' + name;
+            const path =  __dirname + '/../public/uploads/' + name;
             fs.readFile(file.image.path, (err, data) => {
                 fs.writeFile(path, data, (err) => {
                     if(err) res.json({success : false, err : err});
@@ -65,10 +65,10 @@ imageRouter.post('/', async (req,res) => {
     console.log(req.params.id);
     Image.deleteOne({_id : req.params.id})
     .then(result => {
-        path = __dirname + '/../public/uploads/' + req.params.name
+        const path = __dirname + '/../public/uploads/' + req.params.name
         fs.unlink(path, (err) => {
             if(err){
-                res.json(es.json({success : false, err : err}))
+                res.json(res.json({success : false, err : err}))
             }
             else{
                 res.json({success : true});

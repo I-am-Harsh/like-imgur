@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var formidable = require('formidable');
 const User = require('../models/userModel');
-var util = require('util');
 
 
 router
@@ -10,7 +9,7 @@ router
 // login
 .post('/login', async (req,res) => {
   var data = '';
-  form = new formidable.IncomingForm();
+  const form = new formidable.IncomingForm();
   await form.parse(req, (err, fields, files) => {
     if(err) {
       res.json(err)
@@ -23,7 +22,7 @@ router
   console.log("Data : ",data);
   User.find({email : data.email})
   .then((result) => {
-    if(result.length != 0){
+    if(result.length !== 0){
       if(result[0].password === data.password){
         res.json({success : true, 
           token : "send token", 
@@ -46,7 +45,7 @@ router
 // signup
 .post('/signup', async (req,res) => {
   var data = '';
-  form = new formidable.IncomingForm();
+  const form = new formidable.IncomingForm();
   await form.parse(req, (err, fields, files) => {
     if(err) {
       res.json(err)
@@ -59,7 +58,7 @@ router
   
   User.find({email : data.email})
   .then((result) => {  
-    if(result.length == 0){
+    if(result.length === 0){
       User.create(data)
       .then((result) => {
         res.json({
