@@ -1,5 +1,25 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Features
+* Create a user and upload pictures
+* Like and comment
+* Delete post
+* Imgure + instagram clone
+* Demo link - https://share-photo-app.herokuapp.com
+
+## Tecchnical
+* MongoDB is used as db for user and text
+* For image storing a separate API is used
+  * Although an option is provided to store the images on the server itself using fs in public/uploads
+  * visit imageRouter.post to change accordingly.
+* ENV variables are used to connect with API
+  * Create a .env file in root and use REACT_APP_<Varibale Name> to store api endpoint.
+
+* TO run type `npm install` once in root folder
+  * run `npm start` once in root folder --> start the front end --> localhost:3000
+  * run `npm start` once in server folder --> start the backend --> localhost:9001
+  * you also need to configure the mongodb connection point in app.js in server
+
 ## Available Scripts
 
 In the project directory, you can run:
